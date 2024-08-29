@@ -1,0 +1,91 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+header {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.buttons {
+  display: flex;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #f2f2f2;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+#searchID {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#searchByIDBtn,
+#deleteByIDBtn {
+  margin: 0 5px;
+}
+
+#table-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.feedback {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+#addForm div {
+  margin-bottom: 10px;
+}

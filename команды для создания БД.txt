@@ -1,0 +1,188 @@
+CREATE TABLE Users (
+    UserID Serial PRIMARY KEY,
+    UserName VARCHAR(50),
+    Email VARCHAR(50),
+    Address VARCHAR(100),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Orders (
+    OrderID Serial PRIMARY KEY,
+    UserID INT,
+    OrderDate DATE,
+    DeliveryDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Products (
+    ProductID Serial PRIMARY KEY,
+    ProductName VARCHAR(50),
+    Price DECIMAL(10, 2),
+    StockQuantity INT,
+    SalePrice DECIMAL(10, 2),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Reviews (
+    ReviewID Serial PRIMARY KEY,
+    ProductID INT,
+    UserID INT,
+    Rating INT,
+    Comment TEXT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Promotions (
+    PromotionID Serial PRIMARY KEY,
+    ProductID INT,
+    Discount DECIMAL(5, 2),
+    StartDate DATE,
+    EndDate DATE,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Suppliers (
+    SupplierID Serial PRIMARY KEY,
+    SupplierName VARCHAR(50),
+    ContactName VARCHAR(50),
+    Phone VARCHAR(20),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Deliveries (
+    DeliveryID Serial PRIMARY KEY,
+    SupplierID INT,
+    ProductID INT,
+    DeliveryDate DATE,
+    Quantity INT,
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Employees (
+    EmployeeID Serial PRIMARY KEY,
+    EmployeeName VARCHAR(50),
+    Position VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    VacationDaysLeft INT,
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Categories (
+    CategoryID Serial PRIMARY KEY,
+    CategoryName VARCHAR(50),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE ProductCategories (
+    ProductCategoryID Serial PRIMARY KEY,
+    ProductID INT,
+    CategoryID INT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Customers (
+    CustomerID Serial PRIMARY KEY,
+    UserID INT,
+    Phone VARCHAR(20),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Payments (
+    PaymentID Serial PRIMARY KEY,
+    OrderID INT,
+    PaymentDate DATE,
+    Amount DECIMAL(10, 2),
+    PaymentMethod VARCHAR(50),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE CartItems (
+    CartItemID Serial PRIMARY KEY,
+    UserID INT,
+    ProductID INT,
+    Quantity INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE WishlistItems (
+    WishlistItemID Serial PRIMARY KEY,
+    UserID INT,
+    ProductID INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE OrderItems (
+    OrderItemID Serial PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE EmployeeSales (
+    EmployeeSaleID Serial PRIMARY KEY,
+    EmployeeID INT,
+    OrderID INT,
+    SaleAmount DECIMAL(10, 2),
+    CommissionRate DECIMAL(5, 2),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE EmployeeVacations (
+    EmployeeVacationID Serial PRIMARY KEY,
+    EmployeeID INT,
+    VacationStartDate DATE,
+    VacationEndDate DATE,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    IsDeleted boolean default false
+);
+CREATE TABLE Returns (
+    ReturnID Serial PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    ReturnDate DATE,
+    Reason TEXT,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Feedback (
+    FeedbackID Serial PRIMARY KEY,
+    UserID INT,
+    Rating INT,
+    Comment TEXT,
+    DatePosted DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    IsDeleted boolean default false
+);
+
+CREATE TABLE Notifications (
+    NotificationID Serial PRIMARY KEY,
+    UserID INT,
+    Message TEXT,
+    IsRead BOOLEAN,
+    DateSent DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    IsDeleted boolean default false
+);

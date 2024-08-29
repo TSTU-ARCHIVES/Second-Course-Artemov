@@ -1,0 +1,411 @@
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    UserName VARCHAR(50),
+    Email VARCHAR(50),
+    Address VARCHAR(100)
+);
+
+INSERT INTO Users (userid, username, email, address) VALUES 
+(0, 'john_doe', 'john.doe@example.com',  'NY'),
+(1, 'alex_smith', 'jane.smith@example.com',  'Tver, Marshala Budenogo 10'),
+(2, 'mike_jones', 'mike.jones@example.com',  'Tver, Marshala Koneva 10');
+
+
+
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    UserID INT,
+    OrderDate DATE,
+    DeliveryDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+insert into orders (orderid, userid, orderdate, deliverydate, totalamount) values 
+(1, 2, '2023-10-22', '2024-02-20', 11),
+(2, 2, '2024-01-22', '2024-02-21', 100)
+(0, 1, '2022-10-22', '2024-02-21', 10)
+
+
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(50),
+    Price DECIMAL(10, 2),
+    StockQuantity INT,
+    SalePrice DECIMAL(10, 2)
+);
+
+insert into products(productid, productname, price, stockquantity, saleprice) values 
+(0, 'Nails', 1000, 1000, 2500),
+(1, 'Armored Tape', 500, 1000, 1500),
+(2, 'Red Paint', 10000, 200, 1500)
+
+
+CREATE TABLE Reviews (
+    ReviewID INT PRIMARY KEY,
+    ProductID INT,
+    UserID INT,
+    Rating INT,
+    Comment TEXT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+insert into reviews
+(reviewid, productid, userid, rating, comment) 
+values
+(0, 0, 1, 5, 'Excellent'),
+(1, 1, 1, 0, 'Doesnt work'),
+(3, 2, 1, 4, 'Works.')
+
+
+CREATE TABLE Promotions (
+    PromotionID INT PRIMARY KEY,
+    ProductID INT,
+    Discount DECIMAL(5, 2),
+    StartDate DATE,
+    EndDate DATE,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+insert into promotions
+(PromotionID,
+    ProductID,
+    Discount,
+    StartDate,
+    EndDate)
+values 
+(0, 1, 15.5, '2022-10-15', '2022-10-22'),
+(1, 1, 25.5, '2022-12-25', '2023-01-01'),
+(2, 2, 0.5, '2023-10-15', '2023-10-22')
+
+
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY,
+    SupplierName VARCHAR(50),
+    ContactName VARCHAR(50),
+    Phone VARCHAR(20)
+);
+
+CREATE TABLE Deliveries (
+    DeliveryID INT PRIMARY KEY,
+    SupplierID INT,
+    ProductID INT,
+    DeliveryDate DATE,
+    Quantity INT,
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+insert into Suppliers (
+    SupplierID,
+    SupplierName,
+    ContactName,
+    Phone
+) values 
+(0, 'OOO TVERGVOZDI', 'Zubenko Mikhail Petrovich', '88005553535'),
+(1, 'OOO TVERKRASKA', 'Zubenko Mikhail Petrovich', '88005553536'),
+(2, 'OOO RZHEV-LENTA', 'Zubenko Mikhail Petrovich', '88005553537')
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(50),
+    Position VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    VacationDaysLeft INT
+);
+
+insert into Employees (
+    EmployeeID,
+    EmployeeName,
+    Position,
+    Salary,
+    VacationDaysLeft
+)
+values
+(0, 'Kirrilov Vladislav', 'Sales Manager', 40000, 0),
+(1, 'Borzdov Mark', 'Sales Manager', 42000, 10),
+(2, 'Prohorov Artem', 'Sales Manager', 43000, 25),
+(3, 'Melnikov Mikhail', 'System Administrator', 50000, 10),
+(4, 'Ivanov Alexey', 'CEO', 140000, 7),
+(5, 'Sobolev Roman', 'CEO', 140000, 7)
+
+
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY,
+    CategoryName VARCHAR(50)
+);
+
+insert into Categories (
+    CategoryID,
+    CategoryName
+)
+values 
+(0, 'Home products'),
+(1, 'Building heavy products')
+
+CREATE TABLE ProductCategories (
+    ProductCategoryID INT PRIMARY KEY,
+    ProductID INT,
+    CategoryID INT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    UserID INT,
+    Phone VARCHAR(20),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Payments (
+    PaymentID INT PRIMARY KEY,
+    OrderID INT,
+    PaymentDate DATE,
+    Amount DECIMAL(10, 2),
+    PaymentMethod VARCHAR(50),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+CREATE TABLE CartItems (
+    CartItemID INT PRIMARY KEY,
+    UserID INT,
+    ProductID INT,
+    Quantity INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE WishlistItems (
+    WishlistItemID INT PRIMARY KEY,
+    UserID INT,
+    ProductID INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE EmployeeSales (
+    EmployeeSaleID INT PRIMARY KEY,
+    EmployeeID INT,
+    OrderID INT,
+    SaleAmount DECIMAL(10, 2),
+    CommissionRate DECIMAL(5, 2),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+CREATE TABLE EmployeeVacations (
+    EmployeeVacationID INT PRIMARY KEY,
+    EmployeeID INT,
+    VacationStartDate DATE,
+    VacationEndDate DATE,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+CREATE TABLE Returns (
+    ReturnID INT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    ReturnDate DATE,
+    Reason TEXT,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE Feedback (
+    FeedbackID INT PRIMARY KEY,
+    UserID INT,
+    Rating INT,
+    Comment TEXT,
+    DatePosted DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Notifications (
+    NotificationID INT PRIMARY KEY,
+    UserID INT,
+    Message TEXT,
+    IsRead BOOLEAN,
+    DateSent DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+
+INSERT INTO ProductCategories (ProductCategoryID, ProductID, CategoryID) VALUES
+(0, 0, 0),
+(1, 1, 1),
+(2, 2, 0);
+
+INSERT INTO Customers (CustomerID, UserID, Phone) VALUES
+(0, 0, '123-456-7890'),
+(1, 1, '987-654-3210');
+
+INSERT INTO Payments (PaymentID, OrderID, PaymentDate, Amount, PaymentMethod) VALUES
+(0, 0, '2022-01-15', 100.00, 'Credit Card'),
+(1, 1, '2022-01-20', 150.50, 'PayPal');
+
+INSERT INTO CartItems (CartItemID, UserID, ProductID, Quantity) VALUES
+(1, 0, 0, 1),
+(0, 1, 2, 0);
+
+INSERT INTO WishlistItems (WishlistItemID, UserID, ProductID) VALUES
+(0, 0, 2),
+(1, 2, 0);
+
+INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, Price) VALUES
+(0, 0, 0, 2, 50.00),
+(1, 1, 2, 0, 75.50);
+
+INSERT INTO EmployeeSales (EmployeeSaleID, EmployeeID, OrderID, SaleAmount, CommissionRate) VALUES
+(0, 0, 0, 100.00, 0.05),
+(1, 1, 1, 150.50, 0.07);
+
+INSERT INTO EmployeeVacations (EmployeeVacationID, EmployeeID, VacationStartDate, VacationEndDate) VALUES
+(1, 0, '2022-02-01', '2022-02-10'),
+(0, 1, '2022-03-15', '2022-03-20');
+
+INSERT INTO Returns (ReturnID, OrderID, ProductID, ReturnDate, Reason) VALUES
+(0, 0, 0, '2022-02-01', 'Defective product'),
+(1, 1, 2, '2022-03-10', 'Wrong size');
+
+INSERT INTO Feedback (FeedbackID, UserID, Rating, Comment, DatePosted) VALUES
+(0, 0, 5, 'Great product!', '2022-01-20'),
+(1, 1, 4, 'Fast shipping', '2022-02-05');
+
+INSERT INTO Notifications (NotificationID, UserID, Message, IsRead, DateSent) VALUES
+(0, 0, 'Your order has been shipped', FALSE, '2022-01-15'),
+(1, 1, 'New promotion available', FALSE, '2022-02-01');
+
+________
+
+
+
+INSERT INTO Users (userid, username, email, address) VALUES 
+(0, 'john_doe', 'john.doe@example.com',  'NY'),
+(1, 'alex_smith', 'jane.smith@example.com',  'Tver, Marshala Budenogo 10'),
+(2, 'mike_jones', 'mike.jones@example.com',  'Tver, Marshala Koneva 10');
+
+
+insert into orders (orderid, userid, orderdate, deliverydate, totalamount) values 
+(1, 2, '2023-10-22', '2024-02-20', 11),
+(2, 2, '2024-01-22', '2024-02-21', 100),
+(0, 1, '2022-10-22', '2024-02-21', 10);
+
+insert into products(productid, productname, price, stockquantity, saleprice) values 
+(0, 'Nails', 1000, 1000, 2500),
+(1, 'Armored Tape', 500, 1000, 1500),
+(2, 'Red Paint', 10000, 200, 1500);
+
+
+insert into reviews
+(reviewid, productid, userid, rating, comment) 
+values
+(0, 0, 1, 5, 'Excellent'),
+(1, 1, 1, 0, 'Doesnt work'),
+(3, 2, 1, 4, 'Works.');
+
+
+insert into promotions
+(PromotionID,
+    ProductID,
+    Discount,
+    StartDate,
+    EndDate)
+values 
+(0, 1, 15.5, '2022-10-15', '2022-10-22'),
+(1, 1, 25.5, '2022-12-25', '2023-01-01'),
+(2, 2, 0.5, '2023-10-15', '2023-10-22');
+
+insert into Suppliers (
+    SupplierID,
+    SupplierName,
+    ContactName,
+    Phone
+) values 
+(0, 'OOO TVERGVOZDI', 'Zubenko Mikhail Petrovich', '88005553535'),
+(1, 'OOO TVERKRASKA', 'Zubenko Mikhail Petrovich', '88005553536'),
+(2, 'OOO RZHEV-LENTA', 'Zubenko Mikhail Petrovich', '88005553537');
+
+
+insert into Employees (
+    EmployeeID,
+    EmployeeName,
+    Position,
+    Salary,
+    VacationDaysLeft
+)
+values
+(0, 'Kirrilov Vladislav', 'Sales Manager', 40000, 0),
+(1, 'Borzdov Mark', 'Sales Manager', 42000, 10),
+(2, 'Prohorov Artem', 'Sales Manager', 43000, 25),
+(3, 'Melnikov Mikhail', 'System Administrator', 50000, 10),
+(4, 'Ivanov Alexey', 'CEO', 140000, 7),
+(5, 'Sobolev Roman', 'CEO', 140000, 7);
+
+
+insert into Categories (
+    CategoryID,
+    CategoryName
+)
+values 
+(0, 'Home products'),
+(1, 'Building heavy products');
+
+
+INSERT INTO ProductCategories (ProductCategoryID, ProductID, CategoryID) VALUES
+(0, 0, 0),
+(1, 1, 1),
+(2, 2, 0);
+
+INSERT INTO Customers (CustomerID, UserID, Phone) VALUES
+(0, 0, '123-456-7890'),
+(1, 1, '987-654-3210');
+
+INSERT INTO Payments (PaymentID, OrderID, PaymentDate, Amount, PaymentMethod) VALUES
+(0, 0, '2022-01-15', 100.00, 'Credit Card'),
+(1, 1, '2022-01-20', 150.50, 'PayPal');
+
+INSERT INTO CartItems (CartItemID, UserID, ProductID, Quantity) VALUES
+(1, 0, 0, 1),
+(0, 1, 2, 0);
+
+INSERT INTO WishlistItems (WishlistItemID, UserID, ProductID) VALUES
+(0, 0, 2),
+(1, 2, 0);
+
+INSERT INTO OrderItems (OrderItemID, OrderID, ProductID, Quantity, Price) VALUES
+(0, 0, 0, 2, 50.00),
+(1, 1, 2, 0, 75.50);
+
+INSERT INTO EmployeeSales (EmployeeSaleID, EmployeeID, OrderID, SaleAmount, CommissionRate) VALUES
+(0, 0, 0, 100.00, 0.05),
+(1, 1, 1, 150.50, 0.07);
+
+INSERT INTO EmployeeVacations (EmployeeVacationID, EmployeeID, VacationStartDate, VacationEndDate) VALUES
+(1, 0, '2022-02-01', '2022-02-10'),
+(0, 1, '2022-03-15', '2022-03-20');
+
+INSERT INTO Returns (ReturnID, OrderID, ProductID, ReturnDate, Reason) VALUES
+(0, 0, 0, '2022-02-01', 'Defective product'),
+(1, 1, 2, '2022-03-10', 'Wrong size');
+
+INSERT INTO Feedback (FeedbackID, UserID, Rating, Comment, DatePosted) VALUES
+(0, 0, 5, 'Great product!', '2022-01-20'),
+(1, 1, 4, 'Fast shipping', '2022-02-05');
+
+INSERT INTO Notifications (NotificationID, UserID, Message, IsRead, DateSent) VALUES
+(0, 0, 'Your order has been shipped', FALSE, '2022-01-15'),
+(1, 1, 'New promotion available', FALSE, '2022-02-01');
+
